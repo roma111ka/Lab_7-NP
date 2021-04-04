@@ -10,6 +10,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.regex.Pattern;
 import javax.swing.SwingUtilities;
 @SuppressWarnings("serial")
 public class Main extends JFrame {
@@ -24,6 +25,9 @@ public class Main extends JFrame {
     private static final int MEDIUM_GAP = 10;
     private static final int LARGE_GAP = 15;
     private static final int SERVER_PORT = 4567;
+    private static final String  IP_Adres = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\" +
+            ".([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
     private final JTextField textFieldFrom;
     private final JTextField textFieldTo;
     private final JTextArea textAreaIncoming;
@@ -138,6 +142,7 @@ public class Main extends JFrame {
                         textAreaIncoming.append(senderName +
                                 " (" + address + "): " +
                                 message + "\n");
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -170,6 +175,12 @@ public class Main extends JFrame {
             if (message.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
                         "Введите текст сообщения", "Ошибка",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (Pattern.matches(IP_Adres,destinationAddress) == false){
+                JOptionPane.showMessageDialog(this,
+                        "Неправильно введён IP", "Ошибка",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
